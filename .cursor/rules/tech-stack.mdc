@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+The tech stack used in this project.
+
+1. @opennextjs/cloudflare
+2. nextjs
+3. tailwindcss
+4. shadcn/ui
+5. @supabase/supabase-js
+6. @radix-ui/react-icons
+7. typescript
