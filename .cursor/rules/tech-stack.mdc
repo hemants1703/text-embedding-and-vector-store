@@ -12,3 +12,4 @@ The tech stack used in this project.
 5. @supabase/supabase-js
 6. @radix-ui/react-icons
 7. typescript
+8. PNPM
