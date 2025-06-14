@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Text Embeddings and Vector Store
+
+A modern web application that demonstrates the power of text embeddings and vector databases. This project showcases the integration of OpenAI's text embedding model with Supabase's PostgreSQL pgvector database, providing a seamless interface for text-to-vector conversion and storage.
+
+## Features
+
+- 🔤 Text to Vector Embedding: Transform any text into vector embeddings using OpenAI's powerful model
+- 🗄️ Vector Database Storage: Store embeddings in Supabase's PostgreSQL pgvector database
+- 🎨 Modern UI: Built with Next.js 14, Tailwind CSS, and shadcn/ui components
+- ⚡ Real-time Feedback: Instant visual feedback for all operations
+- 🔒 Type Safety: Built with TypeScript for robust type checking
+
+## Tech Stack
+
+- **Frontend:**
+  - Next.js 14 (App Router)
+  - TypeScript
+  - Tailwind CSS
+  - shadcn/ui Components
+  - React Server Actions
+
+- **Backend:**
+  - Next.js API Routes
+  - OpenAI API (Text Embeddings)
+  - Supabase (PostgreSQL with pgvector)
 
 ## Getting Started
 
-First, run the development server:
-
+1. Clone the repository:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/text-embedding-and-vector-store.git
+cd text-embedding-and-vector-store
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Set up environment variables:
+Create a `.env.local` file with:
+```env
+OPENAI_API_KEY=your_openai_api_key
+SUPABASE_URL=your_supabase_url
+SUPABASE_API_KEY=your_supabase_api_key
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Run the development server:
+```bash
+npm run dev
+```
 
-## Learn More
+5. Open [http://localhost:3000](http://localhost:3000) to see the application.
 
-To learn more about Next.js, take a look at the following resources:
+## Project Structure
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+├── src/
+│   ├── app/                 # Next.js app router pages
+│   ├── components/         # React components
+│   ├── lib/               # Utility functions and actions
+│   └── types/             # TypeScript type definitions
+├── public/                # Static assets
+└── ...config files
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Key Features Implementation
 
-## Deploy on Vercel
+- **Text Embedding:** Utilizes OpenAI's text-embedding-ada-002 model for generating vector embeddings
+- **Vector Storage:** Implements Supabase's pgvector extension for efficient vector storage and similarity search
+- **Real-time UI Updates:** Uses React Server Actions for seamless data flow
+- **Responsive Design:** Fully responsive layout with modern UI components
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Contributing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Feel free to submit issues and enhancement requests!

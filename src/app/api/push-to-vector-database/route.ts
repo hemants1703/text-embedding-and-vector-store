@@ -15,8 +15,6 @@ export async function POST(request: NextRequest, response: NextResponse) {
             ])
             .select();
 
-        console.log("Data pushed to vector database: ", data);
-
         if (error) throw new Error(error.message);
 
         return NextResponse.json(data[0]);

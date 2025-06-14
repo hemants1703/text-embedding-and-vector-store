@@ -65,7 +65,6 @@ export default function EmbedForm() {
       }
 
       const data = await response.json() as VectorDatabaseData;
-      console.log("Data pushed to vector database: ", data);
       setVectorDatabaseData(data);
       setPushingToVectorDatabase(false);
       setText(state?.text || "");
