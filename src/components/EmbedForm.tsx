@@ -24,8 +24,9 @@ export default function EmbedForm() {
   const [state, formAction, isEmbedPending] = useActionState<TextEmbeddingFormState, FormData>(embedText, undefined);
   const [pushingToVectorDatabase, setPushingToVectorDatabase] = useState(false);
   const [text, setText] = useState("");
-  const [vectorDatabaseData, setVectorDatabaseData] = useState<VectorDatabaseData>();
+  const [vectorDatabaseData, setVectorDatabaseData] = useState<VectorDatabaseData | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   useEffect(() => {
     if (state?.embedding) {
@@ -50,24 +51,31 @@ export default function EmbedForm() {
     try {
       const response = await fetch("/api/push-to-vector-database", {
         method: "POST",
-        body: JSON.stringify({ text, embeddingVector: state?.embedding }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          text: state.text, 
+          embeddingVector: JSON.parse(state.embedding) 
+        }),
       });
 
       if (!response.ok) {
         throw new Error("Failed to push to vector database");
       }
 
-      const data = await response.json() as VectorDatabaseData[];
+      const data = await response.json() as VectorDatabaseData;
       console.log("Data pushed to vector database: ", data);
-      setVectorDatabaseData(data[0]);
+      setVectorDatabaseData(data);
       setPushingToVectorDatabase(false);
       setText(state?.text || "");
-
-      setError("Text pushed to vector database");
+      setSuccessMessage("Text pushed to vector database successfully");
+      setError(null);
     } catch (error) {
       console.error("Error pushing to vector database: ", error);
       setPushingToVectorDatabase(false);
       setError("Failed to push to vector database");
+      setSuccessMessage(null);
     }
   }
 
@@ -99,6 +107,11 @@ export default function EmbedForm() {
             {error && (
               <div className="p-4 rounded-lg bg-red-50 dark:bg-red-950 border border-red-200 dark:border-red-900">
                 <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+              </div>
+            )}
+            {successMessage && (
+              <div className="p-4 rounded-lg bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-900">
+                <p className="text-green-600 dark:text-green-400 text-sm">{successMessage}</p>
               </div>
             )}
             {state?.embedding && (
@@ -164,7 +177,7 @@ export default function EmbedForm() {
               <div className="p-6 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-800">
                 <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-3">Vector Embedding</h3>
                 <pre className="font-mono text-sm overflow-x-auto text-neutral-800 dark:text-neutral-200 max-h-[200px] overflow-y-auto">
-                  {vectorDatabaseData.embedding}
+                  {JSON.stringify(vectorDatabaseData.embedding, null, 2)}
                 </pre>
               </div>
 
@@ -176,13 +189,7 @@ export default function EmbedForm() {
           ) : (
             <div className="flex-1 flex items-center justify-center">
               <p className="text-neutral-600 dark:text-neutral-400 text-center">
-                {vectorDatabaseData ? (
-                  <div className="flex flex-col gap-2">
-                    <p>Text: {vectorDatabaseData?.content}</p>
-                    <p>Vector Embedding: {vectorDatabaseData?.embedding}</p>
-                    <p>Record ID: #{vectorDatabaseData?.id}</p>
-                  </div>
-                ) : "Push text to vector database to see the stored data here"}
+                Push text to vector database to see the stored data here
               </p>
             </div>
           )}
