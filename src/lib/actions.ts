@@ -47,7 +47,6 @@ export async function queryVectorDatabase(prevState: QueryVectorEmbeddingState, 
 
   try {
     const embedding = await textEmbedder(query);
-    console.log("Query embedding: ", embedding);
 
     const response = await fetch(`http://localhost:3000/api/query-vector-embeddings`, {
       method: 'POST',

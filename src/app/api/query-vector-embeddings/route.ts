@@ -4,9 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(request: NextRequest) {
     const { queryEmbedding } = await request.json() as { queryEmbedding: string };
 
-    console.log("Query embedding: ", queryEmbedding);
-
-
     if (!queryEmbedding) {
         return NextResponse.json({
             success: false,
