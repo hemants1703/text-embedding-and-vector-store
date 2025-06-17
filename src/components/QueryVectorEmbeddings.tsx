@@ -27,34 +27,42 @@ export default function QueryVectorEmbeddings() {
         <div className="space-y-2">
           <h2 className="text-3xl font-bold mb-4">Query Vector Embeddings</h2>
           <p className="text-neutral-600 text-base">
-            Query the vector embedding from Supabase pgvector database.
+            Search for semantically similar content in the vector database using
+            natural language.
           </p>
         </div>
         <form action={queryAction}>
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="query" className="text-neutral-600 text-sm">
-                Query
+              <Label
+                htmlFor="query"
+                className="text-neutral-600 text-sm font-medium"
+              >
+                Search Query
               </Label>
               <Input
                 type="text"
                 name="query"
                 id="query"
-                placeholder="Enter a query to search the vector database"
-                className="w-full p-2 border border-neutral-200 rounded-md"
+                placeholder="Enter your search query (e.g., 'Tell me about machine learning')"
+                className="w-full p-2 border border-neutral-200 rounded-md focus:ring-2 focus:ring-neutral-400 transition-all"
               />
               {errors?.error && (
-                <p className="text-red-500 text-sm">{errors.error}</p>
+                <p className="text-red-500 text-sm mt-1">{errors.error}</p>
               )}
             </div>
-            <Button type="submit" disabled={isQueryPending}>
+            <Button
+              type="submit"
+              disabled={isQueryPending}
+              className="w-full sm:w-auto"
+            >
               {isQueryPending ? (
                 <span className="flex items-center gap-2">
                   <Loader2Icon className="w-4 h-4 animate-spin" />
-                  Querying Vector Database...
+                  Searching...
                 </span>
               ) : (
-                "Query"
+                "Search Similar Content"
               )}
             </Button>
           </div>
@@ -65,7 +73,9 @@ export default function QueryVectorEmbeddings() {
         <div className="space-y-2">
           <h2 className="text-3xl font-bold mb-4">Search Results</h2>
           <p className="text-neutral-600 text-base">
-            View the most similar documents from the vector database.
+            {errors?.query
+              ? "Found semantically similar content based on your query"
+              : "Results will appear here after you search"}
           </p>
         </div>
 
@@ -73,26 +83,55 @@ export default function QueryVectorEmbeddings() {
           {errors?.query ? (
             <div className="h-full overflow-y-auto pr-2 space-y-4">
               {Array.isArray(errors.query) ? (
-                errors.query.map((result: any, index: number) => (
-                  <div
-                    key={index}
-                    className="p-4 bg-neutral-50 rounded-lg border border-neutral-200 truncate"
-                  >
-                    <p className="text-neutral-800">{result.content}</p>
-                    <p className="text-sm text-neutral-500 mt-2">
-                      Similarity: {(result.similarity * 100).toFixed(2)}%
-                    </p>
+                <>
+                  <div className="text-sm text-neutral-500 mb-2">
+                    Showing {errors.query.length} most similar results
                   </div>
-                ))
+                  {errors.query.map((result: any, index: number) => (
+                    <div
+                      key={index}
+                      className="p-4 bg-neutral-50 rounded-lg border border-neutral-200 hover:bg-neutral-100 transition-colors"
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-sm font-medium text-neutral-700">
+                          Result #{index + 1}
+                        </span>
+                        <span className="text-sm font-medium text-emerald-600">
+                          {(result.similarity * 100).toFixed(1)}% Match
+                        </span>
+                      </div>
+                      <p className="text-neutral-800 line-clamp-3">
+                        {result.content}
+                      </p>
+                      <button
+                        onClick={() =>
+                          navigator.clipboard.writeText(result.content)
+                        }
+                        className="mt-2 text-xs text-neutral-500 hover:text-neutral-700 transition-colors"
+                      >
+                        Copy Content
+                      </button>
+                    </div>
+                  ))}
+                </>
               ) : (
-                <p className="text-neutral-600">No results found</p>
+                <div className="h-full flex items-center justify-center">
+                  <p className="text-neutral-600 text-center">
+                    No similar content found. Try a different query.
+                  </p>
+                </div>
               )}
             </div>
           ) : (
             <div className="h-full flex items-center justify-center">
-              <p className="text-neutral-600 text-center">
-                Enter a query to see similar documents
-              </p>
+              <div className="text-center space-y-2">
+                <p className="text-neutral-600">
+                  Enter a search query to find similar content
+                </p>
+                <p className="text-sm text-neutral-500">
+                  The search uses semantic similarity to find relevant content
+                </p>
+              </div>
             </div>
           )}
         </div>
