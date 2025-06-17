@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
         const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_API_KEY!);
         const { data, error } = await supabase.rpc("match_documents", {
             query_embedding: queryEmbedding,
-            match_threshold: 0.50,  // returns values that have a cosine similarity greater than 0.50
+            match_threshold: 0.80,  // returns values that have a cosine similarity greater than 0.50
             match_count: 5
         })
 
