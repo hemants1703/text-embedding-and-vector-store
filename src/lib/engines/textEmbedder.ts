@@ -7,9 +7,10 @@ export default async function textEmbedder(inputText: string) {
   const chunks = await splitTextIntoChunks(inputText, 1000);
 
   const embedding = await openai.embeddings.create({
-    model: "text-embedding-ada-002",
+    model: "text-embedding-3-small",
     input: chunks,
     encoding_format: "float",
+    dimensions: 3
   });
 
   return embedding.data[0].embedding;

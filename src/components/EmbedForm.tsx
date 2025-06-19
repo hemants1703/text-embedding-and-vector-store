@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { embedText } from "@/lib/actions";
 import { CheckIcon, LoaderCircleIcon } from "lucide-react";
 import { useActionState, useState, useEffect } from "react";
+import VectorPlot3D from "./VectorPlot3D";
 
 export type TextEmbeddingFormState =
   | {
@@ -201,6 +202,27 @@ export default function EmbedForm() {
 
           {vectorDatabaseData ? (
             <div className="space-y-6">
+              <div className="p-6 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-800">
+                <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
+                  3D Vector Visualization
+                </h3>
+                <VectorPlot3D
+                  embedding={(() => {
+                    try {
+                      const data = JSON.parse(vectorDatabaseData.embedding);
+                      console.log("Vector data type:", typeof data);
+                      console.log("Vector data length:", data.length);
+                      console.log("First few values:", data.slice(0, 5));
+                      return data;
+                    } catch (error) {
+                      console.error("Error parsing embedding:", error);
+                      return [];
+                    }
+                  })()}
+                  className="rounded-lg overflow-hidden"
+                />
+              </div>
+
               <div className="p-6 bg-neutral-50 dark:bg-neutral-800 rounded-xl border border-neutral-200 dark:border-neutral-800">
                 <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 mb-3">
                   Stored Content
